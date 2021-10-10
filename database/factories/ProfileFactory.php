@@ -7,22 +7,15 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProfileFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
     protected $model = Profile::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
     public function definition()
     {
         return [
-            //
+            'bio'   => $this->faker->text(100),
+            'phone' => $this->faker->phoneNumber,
+            'twitter_username' => '@' . $this->faker->word(10),
+            'github_username'  => 'http://' . $this->faker->word(10) . '.github.io',
         ];
     }
 }

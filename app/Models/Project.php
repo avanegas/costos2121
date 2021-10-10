@@ -29,6 +29,6 @@ class Project extends Model
 
     public function rubros(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasmany(ProjectRubro::class);
+        return $this->hasmany(AprojectRubro::class);
     }    
 }

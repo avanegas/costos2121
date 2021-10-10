@@ -16,10 +16,5 @@ class Obrero extends Model
     public function grupo_obrero()
     {
         return $this->belongsTo(GrupoObrero::class);
-    }
-
-    public function data_obrero()
-    {
-        return $this->hasOne(DataObrero::class);
-    }    
+    }   
 }

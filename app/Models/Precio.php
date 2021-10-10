@@ -31,21 +31,21 @@ class Precio extends Model
 
     public function equipos()
     {
-        return $this->hasMany(PrecioEquipo::class);
+        return $this->hasMany(AprecioEquipo::class);
     }
 
     public function materials()
     {
-        return $this->hasMany(PrecioMaterial::class);
+        return $this->hasMany(AprecioMaterial::class);
     }
 
     public function obreros()
     {
-        return $this->hasMany(PrecioObrero::class);
+        return $this->hasMany(AprecioObrero::class);
     }
 
     public function transportes()
     {
-        return $this->hasMany(PrecioTransporte::class);
+        return $this->hasMany(AprecioTransporte::class);
     }    
 }

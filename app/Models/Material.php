@@ -16,10 +16,5 @@ class Material extends Model
     public function grupo_material()
     {
         return $this->belongsTo(GrupoMaterial::class);
-    }
-
-    public function data_material()
-    {
-        return $this->hasOne(DataMaterial::class);
-    }    
+    } 
 }

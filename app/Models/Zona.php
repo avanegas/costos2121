@@ -18,6 +18,11 @@ class Zona extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function transportes()
+    {
+        return $this->hasMany(Transporte::class);
+    }
+
     //public function general()
     //{
     //    return $this->belongsTo(General::class);
@@ -38,13 +43,8 @@ class Zona extends Model
         return $this->hasMany(GrupoObrero::class);
     }
 
-    public function transportes()
-    {
-        return $this->hasMany(Transporte::class);
-    }
-
     public function grupo_precios()
     {
         return $this->hasMany(GrupoPrecio::class);
-    }    
+    }
 }

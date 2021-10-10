@@ -17,9 +17,4 @@ class Transporte extends Model
     {
         return $this->belongsTo(Zona::class);
     }
-
-    public function data_transporte()
-    {
-        return $this->hasOne(DataTransporte::class);
-    }    
 }

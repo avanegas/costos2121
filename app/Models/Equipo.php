@@ -16,10 +16,5 @@ class Equipo extends Model
     public function grupo_equipo()
     {
         return $this->belongsTo(GrupoEquipo::class);
-    }
-
-    public function data_equipo()
-    {
-        return $this->hasOne(DataEquipo::class);
-    }    
+    }   
 }
