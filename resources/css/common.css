@@ -1,0 +1,33 @@
+.container {
+  @apply max-w-7xl mx-auto px-2;
+}
+
+.wrapper{
+display:grid;
+height:100vh;
+place-items:center
+}
+
+.table th, .table td {
+  @apply border border-gray-400 px-4 py-2;
+}
+
+.table th {
+  @apply text-gray-800;
+}
+
+.table tbody tr:nth-child(2n+1) {
+  @apply bg-gray-200;
+}
+
+@media(min-width:640px) {
+  .container{
+      @apply px-6;
+  }
+}
+
+@media(min-width:1024px) {
+  .container{
+      @apply px-8;
+  }
+}
