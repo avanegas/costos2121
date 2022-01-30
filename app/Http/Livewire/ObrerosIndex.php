@@ -3,8 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Obrero;
-use Livewire\WithPagination;
-use Livewire\Component;
+use Livewire\{Component, WithPagination};
 
 class ObrerosIndex extends Component
 {
@@ -12,11 +11,13 @@ class ObrerosIndex extends Component
 
     protected $queryString = [
         'search' => ['except' => ''],
-        'perPage' => ['except' => '10']
+        'perPage' => ['except' => '20']
     ];
 
     public $search = '';
-    public $perPage = '10';
+    public $sort ='name';
+    public $direction = 'desc';
+    public $perPage = '20';
 
     public function render()
     {
@@ -24,15 +25,29 @@ class ObrerosIndex extends Component
 
         return view('livewire.obreros-index',[
             'obreros' => Obrero::where('name','LIKE', $searchParams)
-                            ->with(['grupo_obrero'])->latest()->paginate($this->perPage)            
+                               ->orderBy($this->sort, $this->direction)
+                               ->paginate($this->perPage)            
         ]);
     }
 
+    public function order($sort)
+    {
+        if ($this->sort == $sort) {
+            if($this->direction == 'desc') {
+                $this->direction = 'asc';
+            } else {
+                $this->direction = 'desc';
+            }
+        } else {
+            $this->sort = $sort;
+            $this->direction = 'asc';
+        }
+    }
     
     public function clear()
     {
         $this->search = '';
         $this->page = 1;
-        $this->perPage = '10';
+        $this->perPage = '20';
     }
 }

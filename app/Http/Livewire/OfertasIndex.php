@@ -3,8 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Oferta;
-use Livewire\WithPagination;
-use Livewire\Component;
+use Livewire\{Component, WithPagination};
 
 class OfertasIndex extends Component
 {
@@ -12,11 +11,13 @@ class OfertasIndex extends Component
 
     protected $queryString = [
         'search' => ['except' => ''],
-        'perPage' => ['except' => '9']
+        'perPage' => ['except' => '15']
     ];
 
     public $search = '';
-    public $perPage = '9';
+    public $sort ='name';
+    public $direction = 'desc';    
+    public $perPage = '15';
 
     public function render()
     {
@@ -26,10 +27,25 @@ class OfertasIndex extends Component
             'ofertas' => Oferta::where('name', 'LIKE', $searchParams)
                             ->orWhere('unidad', 'LIKE', $searchParams)
                             ->orWhere('descripcion', 'LIKE', $searchParams)
-                            ->latest()->paginate($this->perPage)               
+                            ->orderBy($this->sort, $this->direction)
+                            ->paginate($this->perPage)                
         ]);
     }
-    
+
+    public function order($sort)
+    {
+        if ($this->sort == $sort) {
+            if($this->direction == 'desc') {
+                $this->direction = 'asc';
+            } else {
+                $this->direction = 'desc';
+            }
+        } else {
+            $this->sort = $sort;
+            $this->direction = 'asc';
+        }
+    }
+
     public function clear()
     {
         $this->search = '';

@@ -14,6 +14,12 @@ class Post extends Model
         //'name', 'slug', 'status', 'excerpt', 'body', 'category_id','user_id',
     ];
 
+    //retorno de slug
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     // Relacion uno a muchos inversa
     public function user()
     {

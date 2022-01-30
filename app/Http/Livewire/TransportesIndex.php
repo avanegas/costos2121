@@ -3,8 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Transporte;
-use Livewire\WithPagination;
-use Livewire\Component;
+use Livewire\{Component, WithPagination};
 
 class TransportesIndex extends Component
 {
@@ -12,11 +11,13 @@ class TransportesIndex extends Component
 
     protected $queryString = [
         'search' => ['except' => ''],
-        'perPage' => ['except' => '10']
+        'perPage' => ['except' => '20']
     ];
 
     public $search = '';
-    public $perPage = '10';
+    public $sort ='name';
+    public $direction = 'desc';
+    public $perPage = '20';
 
     public function render()
     {
@@ -25,10 +26,25 @@ class TransportesIndex extends Component
         return view('livewire.transportes-index', [
             'transportes' => Transporte::where('name','LIKE', $searchParams)
                                 ->orWhere('unidad','LIKE',$searchParams)
-                                ->with(['zona'])->latest()->paginate($this->perPage)            
+                                ->orderBy($this->sort, $this->direction)
+                                ->paginate($this->perPage)            
         ]);
     }
 
+    public function order($sort)
+    {
+        if ($this->sort == $sort) {
+            if($this->direction == 'desc') {
+                $this->direction = 'asc';
+            } else {
+                $this->direction = 'desc';
+            }
+        } else {
+            $this->sort = $sort;
+            $this->direction = 'asc';
+        }
+    }
+    
     public function clear()
     {
         $this->search = '';

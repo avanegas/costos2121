@@ -13,10 +13,10 @@
 
                       <article class="w-full h-80 bg-cover bg-center" style="background-image:url(@if($post->image) {{Storage::url($post->image->url)}} @else https://cdn.pixabay.com/photo/2020/02/06/20/01/university-library-4825366_960_720.jpg @endif)">
                           <div class="w-full h-full px-8 flex flex-col justify-center">
-                              <p class="text-sm text-white font-bold">
+                              <p class="text-sm text-gray-900 font-bold">
                                   <a href="{{route('posts.category',$post->category)}}" class="uppercase"> {{$post->category->name}} </a>
                               </p>
-                              <p class="text-4x1 text-white leading-6 font-bold mt-2 uppercase">
+                              <p class="text-4x1 text-gray-700 leading-6 font-bold mt-2 uppercase">
                                   <a href="{{route('posts.show',$post)}}"> {{$post->name}}</a>
                               </p>
                               <div>
@@ -35,14 +35,14 @@
                               </div>
                               <div class="2/3">
                                   <div class="text-sm font-medium">
-                                      SHARE:
-                                      <a href="" class="text-blue-700 px-1 ">
+                                      COMPARTIR:
+                                      <a href="" class="text-blue-500 px-2">
                                           FACEBOOk
                                       </a>
-                                      <a href="" class="text-blue-500 px-1 ">
+                                      <a href="" class="text-blue-500 px-1">
                                           TWITTER
                                       </a>
-                                      <a href="{{route('posts.show',$post)}}" class="text-blue-600 px-1 ">
+                                      <a href="{{route('posts.show',$post)}}" class="text-indigo-600 px-8">
                                           Comentarios: {{$post->comments->count()}}
                                       </a>
                                   </div>

@@ -50,11 +50,11 @@ class User extends Authenticatable
             return;
         }
 
-        return $query->where('name', 'LIKE', "%{$termino}%")
-            ->orWhere('email', 'LIKE',  "%{$termino}%")
-            ->orWhereHas('groups', function($query2) use ($termino){
-                $query2->where('name', 'like', "%{$termino}%");
-            });
+        return $query->where('name','LIKE',"%{$termino}%")
+                     ->orWhere('email','LIKE',"%{$termino}%")
+                     ->orWhereHas('groups', function($query2) use ($termino){
+                        $query2->where('name','LIKE',"%{$termino}%");
+                        });
     }
 
     public function adminlte_image(){
@@ -87,12 +87,7 @@ class User extends Authenticatable
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
-    }
-
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class);
-    }   
+    }  
 
     public function image(): MorphOne
     {

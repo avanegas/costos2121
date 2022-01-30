@@ -1,7 +1,7 @@
 <x-app-layout>
   <div class="container py-8">
-      <h1 class="text-4xl font-bold text-gray-600">{{$post->name}}</h1>
-      <div class="text-lg text-gray-500 mb-2">{!! $post->excerpt !!}</div>
+      <h1 class="text-xl text-center text-gray-600  font-bold uppercase mb-4">{{$post->name}}</h1>
+      <div class="text-justify text-gray-500 mb-2">{!! $post->excerpt !!}</div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
           {{-- Contenido Principal--}}
@@ -16,12 +16,12 @@
                   @endif
               </figure>
 
-              <div class="text-base text-gray-500 mt-4">{!! $post->body !!}</div>
+              <div class="text-justify text-base text-gray-500 mt-4">{!! $post->body !!}</div>
           </div>
 
           {{-- Contenido Relacionado --}}
           <aside>
-              <h1 class="font-bold text-gray-700 mb-4">Más en... <span >{{$post->category->name}}</span></h1>
+              <h1 class="font-bold text-gray-700 mb-4">Más en ... <span class="uppercase text-sm">{{$post->category->name}}</span></h1>
               <ul>
                   @foreach ($similares as $similar)
                       <li class="mb-4">
@@ -45,7 +45,7 @@
           <section class="rounded-b-lg  mt-4 ">
               @auth
                   <button x-show="!open" class="bg-blue-200 px-1 py-1 rounded border border-blue-300 text-gray-800 max-w-max shadow-md hover:shadow-lg hover:bg-blue-300 float-right" x-on:click="open=true">Comentar!</button>
-                  <button x-show="open"  class="bg-red-200 px-1 py-1 rounded border border-red-300 text-gray-800 max-w-max shadow-md hover:shadow-lg hover:bg-red-300 float-right" x-on:click="open=true">Mejor NO!</button>
+                  <button x-show="open"  class="bg-green-200 px-1 py-1 rounded border border-green-300 text-gray-800 max-w-max shadow-md hover:shadow-lg hover:bg-green-300 float-right" x-on:click="open=true">Mejor NO!</button>
               @endauth
 
               <h3 class="py-2 text-lg flex">Comentarios: &nbsp; <strong> {{$post->comments->count()}}</strong></h3>
@@ -57,8 +57,8 @@
                   <form class="m-4 flex" action="{{route('comment.add')}}" accept-charset="UTF-8" method="POST">
                       @csrf
                       <input type="hidden" id="post_id" name="post_id" value="{{$post->id}}">
-                      <textarea id="comment" name="comment" class=" w-full rounded-l-lg p-4 border-t mr-0 border-b border-l text-xl text-gray-800 border-gray-200 bg-white" rows="4" placeholder="Comentar aqui ..."></textarea>
-                      <button type="submit" class="px-8 rounded-r-lg bg-red-300 text-xl text-gray-800 font-bold p-4 uppercase border-red-300 border-t border-b border-r">Comentar</button>
+                      <textarea id="comment" name="comment" class="w-full rounded-l-lg p-4 border-t mr-0 border-b border-l text-gray-800 border-gray-200 bg-white" rows="4" placeholder="Comentar aqui ..."></textarea>
+                      <button type="submit" class="bg-green-300 border-green-300 px-8 p-4 rounded-r-lg text-xl  text-gray-800 font-bold uppercase border-t border-b border-r">Comentar</button>
                   </form>
               </div>
 

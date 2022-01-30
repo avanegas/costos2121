@@ -3,8 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Equipo;
-use Livewire\WithPagination;
-use Livewire\Component;
+use Livewire\{Component, WithPagination};
 
 class EquiposIndex extends Component
 {
@@ -12,27 +11,44 @@ class EquiposIndex extends Component
 
     protected $queryString = [
         'search' => ['except' => ''],
-        'perPage' => ['except' => '10']
+        'perPage' => ['except' => '20']
         ];
 
     public $search = '';
-    public $perPage = '10';
+    public $sort ='name';
+    public $direction = 'desc';
+    public $perPage = '20';
 
     public function render()
     {
-        $searchParams = '%'.$this->search.'%';
+        $searchParams = '%' . $this->search . '%';
                 
         return view('livewire.equipos-index', [
                     'equipos' => Equipo::where('name','LIKE', $searchParams)
-                                    ->orWhere('marca','LIKE',$searchParams)
-                                    ->with(['grupo_equipo'])->latest()->paginate($this->perPage)            
+                                       ->orWhere('marca','LIKE',$searchParams)
+                                       ->orderBy($this->sort, $this->direction)
+                                       ->paginate($this->perPage)            
         ]);
+    }
+
+    public function order($sort)
+    {
+        if ($this->sort == $sort) {
+            if($this->direction == 'desc') {
+                $this->direction = 'asc';
+            } else {
+                $this->direction = 'desc';
+            }
+        } else {
+            $this->sort = $sort;
+            $this->direction = 'asc';
+        }
     }
  
     public function clear()
     {
         $this->search = '';
         $this->page = 1;
-        $this->perPage = '10';
+        $this->perPage = '20';
     }   
 }

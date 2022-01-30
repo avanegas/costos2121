@@ -22,8 +22,8 @@
                             @csrf
                             <input type="hidden" name="post_id" value="{{ $post_id }}" />
                             <input type="hidden" name="comment_id" value="{{ $comment->id }}" />
-                            <textarea id="comment" name="comment"  class=" w-full rounded-l-lg p-4 border-t mr-0 border-b border-l text-xl text-gray-800 border-gray-200 bg-white" rows="4" placeholder="Replicar aqui ..."></textarea>
-                            <button type="submit" class="px-8 rounded-r-lg bg-green-300 text-xl text-gray-800 font-bold p-4 uppercase border-green-300 border-t border-b border-r">Replicar</button>
+                            <textarea id="comment" name="comment"  class="w-full rounded-l-lg p-4 border-t mr-0 border-b border-l text-gray-800 border-gray-200 bg-white" rows="4" placeholder="Replicar aqui ..."></textarea>
+                            <button type="submit" class="bg-green-300 border-green-300 px-8 p-4 rounded-r-lg text-xl text-gray-800 font-bold uppercase border-t border-b border-r">Replicar</button>
                         </form>
                     </div>
 
