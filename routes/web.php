@@ -9,12 +9,17 @@ use App\Http\Livewire\MaterialsIndex;
 use App\Http\Livewire\ObrerosIndex;
 use App\Http\Livewire\TransportesIndex;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PrecioController;
+use App\Http\Controllers\ProjectController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PostController::class, 'index'])->name('posts.index');
 Route::get('posts/{post}', [PostController::class, 'show'])->name('posts.show');
 Route::get('category/{category}', [PostController::class, 'category'])->name('posts.category');
 Route::get('tag/{tag}', [PostController::class, 'tag'])->name('posts.tag');
+Route::get('precios/{precio}', [PrecioController::class, 'show'])->name('precios.show');
+Route::get('projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
 
 Route::get('equipos',EquiposIndex::class)->name('equipos');
 Route::get('materials',MaterialsIndex::class)->name('materials');

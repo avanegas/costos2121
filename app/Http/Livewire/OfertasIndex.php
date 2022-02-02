@@ -16,7 +16,7 @@ class OfertasIndex extends Component
 
     public $search = '';
     public $sort ='name';
-    public $direction = 'desc';    
+    public $direction = 'asc';    
     public $perPage = '15';
 
     public function render()

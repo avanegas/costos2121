@@ -1,39 +1,34 @@
 <div class="container py-8">
     <div class="flex pb-6 ">
-        <p class="flex-initial px-6 text-2xl font-black text-gray-900 md:px-12">
+        <p class="flex-initial text-2xl text-gray-900 px-6 md:px-12">
             Servicios.
         </p>
-        <p class="w-full pt-2 ml-6 text-gray-700 bg-yellow-100 border-b border-gray-300 rounded-md form-input">
+        <p class="form-input bg-yellow-100 border-b border-gray-300 text-gray-700 text-center rounded-md w-full pt-1 ml-6">
             SIN COMPROMISO diseño, construcción y mucho más con los mejores  . ...<span class="font-bold text-pink-500"> CALIDAD, ECONOMIA Y SEGURIDAD!</span>
         </p>
     </div>
-
-    <div class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
-        <div class="flex px-4 py-3 bg-white border-t border-gray-200">
-            <div class="block mt-1 ml-6 shadow-sm form-input ronded-md">
-                <select wire:model="perPage" class="text-sm text-gray-500 outline-none">
+    <div class="bg-white shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+        <div class="flex bg-white px-4 py-3 border-t border-gray-200">
+            <x-jet-input class="w-full" placeholder="buscar ..." type="text" wire:model="search" />
+            <div class="ml-6 block">
+                <select wire:model="perPage" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                     <option value="20">20 por página</option>
                     <option value="50">50 por página</option>
                     <option value="100">100 por página</option>
                 </select>
             </div>
-
-            <div class="block mt-1 ml-6 shadow-sm form-input ronded-md">
-                <select wire:model="search" class="text-sm text-gray-500 outline-none">
+            <div class="ml-6 block">
+                <select wire:model="search" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                     <option value="">Seleccione</option>
                     @foreach ( $groups as $key => $group)
                         <option value="{{$group->name}}" class="text-sm font-semibold">{{ $group->name }}</option>
                     @endforeach
                 </select>
             </div>
-
-            <input class="block w-full mt-1 shadow-sm form-input ronded-md" wire:model="search" type="text" placeholder="Buscar...">
-
-            @if($search !== '')
-                <button wire:click="clear" class="block mt-1 ml-6 rounded-md shadow-sm form-input">X</button>
+            @if($search !=='')
+                <button wire:click="clear" class="border-gray-400 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 ml-6 px-2 block">X</button>
             @endif
         </div>
-
         <div class="bg-white">
             <div class="px-4">
                 @if ($users->count())
@@ -65,7 +60,6 @@
                         @endforeach
                         </tbody>
                     </table>
-
                     <div class="mt-4 mb-2">
                         {{$users->links()}}
                     </div>
@@ -78,4 +72,3 @@
         </div>
     </div>
 </div>
-

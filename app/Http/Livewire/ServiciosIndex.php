@@ -30,12 +30,27 @@ class ServiciosIndex extends Component
     public function render()
     {
         $users = User::termino($this->search);
-        $users = $users->paginate($this->perPage);
+        $users = $users->orderBy($this->sort, $this->direction)
+                       ->paginate($this->perPage);
 
         return view('livewire.servicios-index', compact('users'));
 
     }
 
+    public function order($sort)
+    {
+        if ($this->sort == $sort) {
+            if($this->direction == 'desc') {
+                $this->direction = 'asc';
+            } else {
+                $this->direction = 'desc';
+            }
+        } else {
+            $this->sort = $sort;
+            $this->direction = 'asc';
+        }
+    }
+ 
     public function clear() {
         $this->search = '';
         $this->page = 1;

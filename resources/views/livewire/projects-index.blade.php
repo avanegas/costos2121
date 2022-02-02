@@ -85,7 +85,7 @@
                         <tr>
                             <a href="#">
                             <td class="px-2 py-3">{{ $proyecto->id }}</td>
-                            <td><a href="{{url('proyectos', $proyecto)}}">{{ $proyecto->name }}</a></td>
+                            <td><a href="{{url('projects', $proyecto)}}">{{ $proyecto->name }}</a></td>
                             <td>{{ $proyecto->contratante }}</td>
                             <td>{{ $proyecto->ubicacion }}</td>
                             <td>{{ $proyecto->oferente }}</td>
