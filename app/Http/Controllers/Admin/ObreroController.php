@@ -4,82 +4,56 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\GrupoObrero;
+use App\Models\Obrero;
+use App\Http\Requests\ObreroRequest;
 
 class ObreroController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('can:admin.obreros.index')->only('index');
+        $this->middleware('can:admin.obreros.create')->only('create', 'store');
+        $this->middleware('can:admin.obreros.edit')->only('edit', 'update');
+        $this->middleware('can:admin.obreros.destroy')->only('destroy');
+    }
+
     public function index()
     {
-        //
+        return view('admin.obreros.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $grupo_obreros = GrupoObrero::all();
+        return view('admin.obreros.create', compact('grupo_obreros'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(ObreroRequest $request)
     {
-        //
+        $obrero = Obrero::create($request->all());
+
+        return redirect()->route('admin.obreros.edit',$obrero)->with('info', 'El obrero se creó con éxito');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function edit(Obrero $obrero)
     {
-        //
+        $grupo_obreros = GrupoObrero::all();
+
+        return view('admin.obreros.edit', compact('obrero', 'grupo_obreros'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update(ObreroRequest $request, Obrero $obrero)
     {
-        //
+        $obrero->update($request->all());
+
+        return redirect()->route('admin.obreros.edit', $obrero)->with('info', 'El obrero se actualizó con éxito');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function destroy(Obrero $obrero)
     {
-        //
-    }
+        $obrero->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return redirect()->route('admin.obreros.index')->with('info', 'El obrero se eliminó con éxito');
     }
 }

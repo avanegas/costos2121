@@ -6,25 +6,34 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class PostRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
-        return [
-            //
+        $post = $this->route()->parameter('post');
+
+        $rules = [
+            'name'   => 'required',
+            'slug'   => 'required|unique:posts',
+            'status' => 'required',
+            'file'   => 'image'
         ];
+
+        if($post){
+            $rules['slug'] = 'required|unique:posts,slug,' . $post->id;
+        }
+
+        if($this->status=="PUBLISHED"){
+            $rules = array_merge($rules, [
+                'category_id' => 'required',
+                'tags'        => 'required',
+                'excerpt'     => 'required',
+                'body'        => 'required'
+            ]);
+        }
+        return $rules;
     }
 }

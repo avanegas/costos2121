@@ -4,82 +4,56 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\GrupoMaterial;
+use App\Models\Material;
+use App\Http\Requests\MaterialRequest;
 
 class MaterialController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('can:admin.materials.index')->only('index');
+        $this->middleware('can:admin.materials.create')->only('create', 'store');
+        $this->middleware('can:admin.materials.edit')->only('edit', 'update');
+        $this->middleware('can:admin.materials.destroy')->only('destroy');
+    }
+
     public function index()
     {
-        //
+        return view('admin.materials.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $grupo_materials = GrupoMaterial::all();
+        return view('admin.materials.create', compact('grupo_materials'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(MaterialRequest $request)
     {
-        //
+        $material = Material::create($request->all());
+
+        return redirect()->route('admin.materials.edit',$material)->with('info', 'El material se creó con éxito');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function edit(Material $material)
     {
-        //
+        $grupo_materials = GrupoMaterial::all();
+
+        return view('admin.materials.edit', compact('material', 'grupo_materials'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update(MaterialRequest $request, Material $material)
     {
-        //
+        $material->update($request->all());
+
+        return redirect()->route('admin.materials.edit', $material)->with('info', 'El material se actualizó con éxito');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function destroy(Material $material)
     {
-        //
-    }
+        $material->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return redirect()->route('admin.materials.index')->with('info', 'El material se eliminó con éxito');
     }
 }

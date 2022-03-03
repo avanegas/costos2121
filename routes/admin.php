@@ -21,7 +21,7 @@ use App\Http\Controllers\Admin\GeneralController;
 use App\Http\Controllers\Admin\IndiceController;
 use App\Http\Controllers\Admin\IndirectoController;
 use App\Http\Controllers\Admin\LocationController;
-use App\Http\Controllers\Admin\ProyectController;
+use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\PrecioController;
 use App\Http\Controllers\Admin\OfertaController;
 use App\Http\Controllers\Admin\ServicioController;
@@ -55,7 +55,7 @@ Route::resource('transportes', TransporteController::class)->except('show')->nam
 Route::resource('generals', GeneralController::class)->except('show')->names('admin.generals');
 Route::resource('indirectos', IndirectoController::class)->except('show')->names('admin.indirectos');
 Route::resource('indices', IndiceController::class)->except('show')->names('admin.indices');
-Route::resource('proyectos', ProyectController::class)->except('show')->names('admin.proyectos');
+Route::resource('projects', ProjectController::class)->except('show')->names('admin.projects');
 Route::resource('precios', PrecioController::class)->except('show')->names('admin.precios');
 Route::resource('ofertas', OfertaController::class)->except('show')->names('admin.ofertas');
 Route::resource('servicios', ServicioController::class)->except('show')->names('admin.servicios');

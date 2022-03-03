@@ -4,82 +4,56 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Zona;
+use App\Models\Transporte;
+use App\Http\Requests\TransporteRequest;
 
 class TransporteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('can:admin.transportes.index')->only('index');
+        $this->middleware('can:admin.transportes.create')->only('create', 'store');
+        $this->middleware('can:admin.transportes.edit')->only('edit', 'update');
+        $this->middleware('can:admin.transportes.destroy')->only('destroy');
+    }
+
     public function index()
     {
-        //
+        return view('admin.transportes.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $zonas = Zona::all();
+        return view('admin.transportes.create', compact('zonas'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(TransporteRequest $request)
     {
-        //
+        $transporte = Transporte::create($request->all());
+
+        return redirect()->route('admin.transportes.edit',$transporte)->with('info', 'El transporte se creó con éxito');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function edit(Transporte $transporte)
     {
-        //
+        $zonas = Zona::all();
+
+        return view('admin.transportes.edit', compact('transporte', 'zonas'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update(TransporteRequest $request, Transporte $transporte)
     {
-        //
+        $transporte->update($request->all());
+
+        return redirect()->route('admin.transportes.edit', $transporte)->with('info', 'El transporte se actualizó con éxito');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function destroy(Transporte $transporte)
     {
-        //
-    }
+        $transporte->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return redirect()->route('admin.transportes.index')->with('info', 'El transporte se eliminó con éxito');
     }
 }

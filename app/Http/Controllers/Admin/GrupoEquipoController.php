@@ -4,82 +4,56 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Zona;
+use App\Models\GrupoEquipo;
+use App\Http\Requests\GrupoEquipoRequest;
 
 class GrupoEquipoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('can:admin.grupo_equipos.index')->only('index');
+        $this->middleware('can:admin.grupo_equipos.create')->only('create', 'store');
+        $this->middleware('can:admin.grupo_equipos.edit')->only('edit', 'update');
+        $this->middleware('can:admin.grupo_equipos.destroy')->only('destroy');
+    }
+
     public function index()
     {
-        //
+        return view('admin.grupo_equipos.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $zonas = Zona::all();
+        return view('admin.grupo_equipos.create', compact('zonas'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(GrupoEquipoRequest $request)
     {
-        //
+        $grupo_equipo = GrupoEquipo::create($request->all());
+
+        return redirect()->route('admin.grupo_equipos.edit',$grupo_equipo)->with('info', 'El grupo de equipo se creó con éxito');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function edit(GrupoEquipo $grupo_equipo)
     {
-        //
+        $zonas = Zona::all();
+
+        return view('admin.grupo_equipos.edit', compact('grupo_equipo', 'zonas'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update(GrupoEquipoRequest $request, GrupoEquipo $grupo_equipo)
     {
-        //
+        $grupo_equipo->update($request->all());
+
+        return redirect()->route('admin.grupo_equipos.edit', $grupo_equipo)->with('info', 'El grupo de equipo se actualizó con éxito');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function destroy(GrupoEquipo $grupo_equipo)
     {
-        //
-    }
+        $grupo_equipo->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return redirect()->route('admin.grupo_equipos.index')->with('info', 'El grupo de equipo se eliminó con éxito');
     }
 }

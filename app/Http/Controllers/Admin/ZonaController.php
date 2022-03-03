@@ -4,82 +4,61 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Zona;
 
 class ZonaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('can:admin.zonas.index')->only('index');
+        $this->middleware('can:admin.zonas.create')->only('create', 'store');
+        $this->middleware('can:admin.zonas.edit')->only('edit', 'update');
+        $this->middleware('can:admin.zonas.destroy')->only('destroy');
+    }
+
     public function index()
     {
-        //
+        return view('admin.zonas.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('admin.zonas.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required'
+        ]);
+
+        $zona = Zona::create($request->all());
+
+        return redirect()->route('admin.zonas.edit', $zona)->with('info', 'La zona se creó con éxito');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function edit(Zona $zona)
     {
-        //
+        return view('admin.zonas.edit', compact('zona'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update(Request $request, Zona $zona)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required'
+        ]);
+
+        $zona->update($request->all());
+
+        return redirect()->route('admin.zonas.edit', $zona)->with('info', 'La zona se actualizó con éxito');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function destroy(Zona $zona)
     {
-        //
-    }
+        $zona->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return redirect()->route('admin.zonas.index')->with('info', 'La zona se eliminó con éxito');
     }
 }

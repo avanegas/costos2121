@@ -6,25 +6,35 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class OfertaRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
-        return [
-            //
+        $oferta = $this->route()->parameter('oferta');
+
+        $rules = [
+            'name'   => 'required',
+            'slug'   => 'required|unique:ofertas',
+            'status' => 'required',
+            'file'   => 'image|max:3000',
+            'archivo.*' => 'required|file|mimes:pdf'
         ];
+
+        if($oferta){
+            $rules['slug'] = 'required|unique:ofertas,slug,' . $oferta->id;
+        }
+
+        if($this->status=="PUBLISHED"){
+            $rules = array_merge($rules, [
+                'unidad'      => 'required',
+                'descripcion' => 'required',
+                'stock'       => 'required',
+                'precio'      => 'required'
+            ]);
+        }
+        return $rules;
     }
 }

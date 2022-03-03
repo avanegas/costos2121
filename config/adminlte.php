@@ -369,7 +369,7 @@ return [
         ],
         [
             'text'   => 'Proyectos',
-            'route'  => 'admin.proyectos.index',
+            'route'  => 'admin.projects.index',
             'icon'   => 'far fa-fw fa-bookmark',
         ],
 

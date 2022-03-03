@@ -4,82 +4,117 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Oferta;
+use App\Http\Requests\OfertaRequest;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class OfertaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('can:admin.ofertas.index')->only('index');
+        $this->middleware('can:admin.ofertas.create')->only('create', 'store');
+        $this->middleware('can:admin.ofertas.edit')->only('edit', 'update');
+        $this->middleware('can:admin.ofertas.destroy')->only('destroy');
+    }
+
     public function index()
     {
-        //
+        return view('admin.ofertas.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('admin.ofertas.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(OfertaRequest $request)
     {
-        //
+        //dd($request->all());
+        $oferta = new Oferta;
+        $oferta->user_id = $request->get('user_id');
+        $oferta->name = $request->get('name');
+        $oferta->slug = $request->get('slug');
+        $oferta->unidad = $request->get('unidad');
+        $oferta->descripcion = $request->get('descripcion');
+        $oferta->stock = $request->get('stock');
+        $oferta->precio = $request->get('precio');
+        $oferta->status = $request->get('status');
+
+        if ($request->hasFile('pdf')) {
+            $file2 = $request->file('pdf');
+
+            if ($file2->getClientOriginalExtension() == "pdf") {
+                $file2->move(public_path().'\storage\archivos/',$file2->getClientOriginalName());
+                $oferta->file = $file2->getClientOriginalName();
+            } else {
+                $oferta->file = 'Sin archivo';
+            }
+        }
+        $oferta->save();
+
+        if ($request->file('file')){
+            $url = Storage::put('public/posts', $request->file('file'));
+            $oferta->image()->create([
+                'url' => $url
+            ]);
+        }
+
+        return redirect()->route('admin.ofertas.edit',$oferta)->with('info', 'La oferta se creó con éxito');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function edit(Oferta $oferta)
     {
-        //
+        return view('admin.ofertas.edit', compact('oferta'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update(OfertaRequest $request, Oferta $oferta)
     {
-        //
+        //$oferta->update($request->all());
+
+        $oferta = Oferta::find($oferta->id);
+        //$oferta->user_id = $request->get('user_id');
+        $oferta->name = $request->get('name');
+        $oferta->slug = $request->get('slug');
+        $oferta->unidad = $request->get('unidad');
+        $oferta->descripcion = $request->get('descripcion');
+        $oferta->stock = $request->get('stock');
+        $oferta->precio = $request->get('precio');
+        $oferta->status = $request->get('status');
+        if ($request->hasFile('pdf')) {
+            $file2 = $request->file('pdf');
+            if ($file2->getClientOriginalExtension() == "pdf") {
+                File::delete(public_path().'\storage\archivos/',$oferta->file);
+                $file2->move(public_path().'\storage\archivos/',$file2->getClientOriginalName());
+                $oferta->file = $file2->getClientOriginalName();
+            } else {
+                $oferta->file = 'Sin archivo';
+            }
+        }
+        $oferta->save();
+
+        if ($request->file('file')) {
+            $url = Storage::put('public/posts', $request->file('file'));
+            if($oferta->image) {
+                Storage::delete($oferta->image->url);
+                $oferta->image->update([
+                    'url' => $url
+                ]);
+            }else{
+                $oferta->image()->create([
+                    'url' => $url
+                ]);
+            }
+        }
+
+        return redirect()->route('admin.ofertas.edit', $oferta)->with('info', 'La oferta se actualizó con éxito');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function destroy(Oferta $oferta)
     {
-        //
-    }
+        $oferta->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return redirect()->route('admin.ofertas.index')->with('info', 'La oferta se eliminó con éxito');
     }
 }

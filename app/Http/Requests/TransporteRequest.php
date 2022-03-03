@@ -6,25 +6,21 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class TransporteRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
-        return [
-            //
+        $rules = [
+            'zona_id' => 'required',
+            'name'    => 'required',
+            'unidad'  => 'required',
+            'tipo'    => 'required',
+            'tarifa'  => 'required'
         ];
+
+        return $rules;
     }
 }
